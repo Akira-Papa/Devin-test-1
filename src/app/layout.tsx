@@ -1,9 +1,13 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import ThemeRegistry from '@/components/ThemeRegistry'
 import './globals.css'
 
+const inter = Inter({ subsets: ['latin'] })
+
 export const metadata: Metadata = {
-  title: 'Devin Test App',
-  description: 'Created with Next.js',
+  title: 'Next.js ドキュメント',
+  description: 'Next.jsフレームワークの包括的な日本語ドキュメント',
 }
 
 export default function RootLayout({
@@ -12,8 +16,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="ja">
+      <body className={inter.className}>
+        <ThemeRegistry>
+          {children}
+        </ThemeRegistry>
+      </body>
     </html>
   )
 }
