@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
-import { ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { theme, notoSansJP } from './theme'
+import { Inter } from 'next/font/google'
+import ThemeRegistry from '@/components/ThemeRegistry'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Next.js ドキュメント',
@@ -17,13 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={notoSansJP.className}>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+      <body className={inter.className}>
+        <ThemeRegistry>
+          {children}
+        </ThemeRegistry>
       </body>
     </html>
   )
