@@ -7,6 +7,7 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import Container from '@mui/material/Container'
+import CodeBlock from '@/components/CodeBlock'
 
 export const metadata: Metadata = {
   title: 'コンポーネント | Next.js ドキュメント',
@@ -45,9 +46,9 @@ export default function ComponentsPage() {
         <Typography variant="body1" sx={{ mb: 2 }}>
           App Routerでは、すべてのコンポーネントがデフォルトでサーバーコンポーネントとして動作します：
         </Typography>
-        <Paper variant="outlined" sx={{ p: 3, mb: 3, bgcolor: 'grey.50' }}>
-          <Typography component="pre" sx={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
-            {`// app/components/ServerComponent.tsx
+        <CodeBlock
+          language="tsx"
+          code={`// app/components/ServerComponent.tsx
 export default function ServerComponent() {
   return (
     <div>
@@ -56,8 +57,7 @@ export default function ServerComponent() {
     </div>
   )
 }`}
-          </Typography>
-        </Paper>
+        />
       </Box>
 
       <Box component="section" sx={{ mb: 6 }}>
@@ -67,9 +67,9 @@ export default function ServerComponent() {
         <Typography variant="body1" sx={{ mb: 2 }}>
           インタラクティブな機能が必要な場合は、'use client'ディレクティブを使用します：
         </Typography>
-        <Paper variant="outlined" sx={{ p: 3, mb: 3, bgcolor: 'grey.50' }}>
-          <Typography component="pre" sx={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
-            {`'use client'
+        <CodeBlock
+          language="tsx"
+          code={`'use client'
 
 // app/components/ClientComponent.tsx
 import { useState } from 'react'
@@ -87,8 +87,7 @@ export default function ClientComponent() {
     </div>
   )
 }`}
-          </Typography>
-        </Paper>
+        />
       </Box>
 
       <Box component="section">
@@ -100,7 +99,7 @@ export default function ClientComponent() {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Paper variant="outlined" sx={{ p: 3 }}>
+            <Paper sx={{ p: 3, bgcolor: 'grey.50' }}>
               <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
                 サーバーコンポーネント
               </Typography>
@@ -121,7 +120,7 @@ export default function ClientComponent() {
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper variant="outlined" sx={{ p: 3 }}>
+            <Paper sx={{ p: 3, bgcolor: 'grey.50' }}>
               <Typography variant="h4" sx={{ mb: 2, fontWeight: 'bold' }}>
                 クライアントコンポーネント
               </Typography>
