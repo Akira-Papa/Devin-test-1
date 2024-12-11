@@ -1,0 +1,12 @@
+{
+  "name": "devin-test-1",
+  "version": "1.0.0",
+  "description": "Devinのテスト用リポジトリtest",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}
