@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material';
 import { Noto_Sans_JP } from 'next/font/google';
 
 const notoSansJP = Noto_Sans_JP({
@@ -18,6 +18,10 @@ export const theme = createTheme({
     secondary: {
       main: '#dc004e',
     },
+    background: {
+      default: '#f5f5f5',
+      paper: '#ffffff',
+    },
   },
   components: {
     MuiTypography: {
@@ -33,6 +37,23 @@ export const theme = createTheme({
           subtitle2: 'h6',
           body1: 'p',
           body2: 'p',
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+        fullWidth: true,
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          borderRadius: 8,
         },
       },
     },
