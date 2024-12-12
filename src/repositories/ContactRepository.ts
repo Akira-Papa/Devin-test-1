@@ -5,9 +5,20 @@ export class ContactRepository {
   private static instance: ContactRepository;
 
   private constructor() {
-    // Initialize MongoDB connection
-    const MONGODB_URI = 'mongodb://localhost:27017/test1';
-    mongoose.connect(MONGODB_URI);
+    // Initialize MongoDB connection with error handling
+    const MONGODB_URI = 'mongodb://127.0.0.1:27017/test1';
+    mongoose.connect(MONGODB_URI)
+      .then(() => console.log('MongoDB connected successfully'))
+      .catch(err => console.error('MongoDB connection error:', err));
+
+    // Handle connection events
+    mongoose.connection.on('error', err => {
+      console.error('MongoDB connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      console.log('MongoDB disconnected');
+    });
   }
 
   public static getInstance(): ContactRepository {
