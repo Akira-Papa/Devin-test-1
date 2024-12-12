@@ -16,28 +16,28 @@ if (process.env.NODE_ENV === 'development') {
   }
   if (!globalWithMongo._mongoClientPromise) {
     client = new MongoClient(uri, options)
-    globalWithMongo._mongoClientPromise = client.connect().then(async (client) => {
-      const db = client.db()
-      // Drop the problematic username index if it exists
-      try {
-        await db.collection('users').dropIndex('username_1')
-      } catch (error) {
-        // Ignore error if index doesn't exist
-      }
-      // Ensure email index
-      await db.collection('users').createIndex({ email: 1 }, { unique: true })
-      return client
-    })
+    globalWithMongo._mongoClientPromise = client.connect()
   }
   clientPromise = globalWithMongo._mongoClientPromise
 } else {
   client = new MongoClient(uri, options)
-  clientPromise = client.connect().then(async (client) => {
-    const db = client.db()
-    // Ensure email index in production
-    await db.collection('users').createIndex({ email: 1 }, { unique: true })
-    return client
-  })
+  clientPromise = client.connect()
 }
 
 export default clientPromise
+
+// Initialize database function
+export async function initializeDatabase() {
+  const client = await clientPromise
+  const db = client.db()
+  const users = db.collection('users')
+
+  // Drop all indexes first
+  await users.dropIndexes()
+
+  // Remove any documents with null email
+  await users.deleteMany({ email: null })
+
+  // Create new indexes
+  await users.createIndex({ email: 1 }, { unique: true })
+}

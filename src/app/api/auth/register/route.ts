@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import clientPromise from '@/lib/mongodb'
+import clientPromise, { initializeDatabase } from '@/lib/mongodb'
 
 export async function POST(request: Request) {
   try {
+    // Initialize database on first request
+    await initializeDatabase()
+
     const { name, email, password } = await request.json()
 
     if (!name || !email || !password) {
