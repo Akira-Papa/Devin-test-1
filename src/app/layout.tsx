@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import ThemeRegistry from '@/components/ThemeRegistry';
+import AppThemeProvider from '@/components/ThemeProvider';
 import './globals.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -8,8 +8,8 @@ import '@fontsource/roboto/700.css';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 export const metadata: Metadata = {
-  title: 'Next.js ドキュメント',
-  description: 'Next.jsフレームワークの包括的な日本語ドキュメント',
+  title: '認証システム',
+  description: 'NextAuth.jsとMongoDBを使用した会員認証システム',
 };
 
 export default function RootLayout({
@@ -21,9 +21,9 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <AppRouterCacheProvider>
-          <ThemeRegistry key="mui-theme">
+          <AppThemeProvider>
             {children}
-          </ThemeRegistry>
+          </AppThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
