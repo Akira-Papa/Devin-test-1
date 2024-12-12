@@ -12,7 +12,7 @@
     "cleanup": "node --experimental-modules scripts/cleanup-db.js"
   },
   "dependencies": {
-    "@auth/core": "^0.37.4",
+    "@auth/core": "^0.34.2",
     "@auth/mongodb-adapter": "^3.7.4",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
