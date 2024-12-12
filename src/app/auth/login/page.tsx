@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Box, Button, Container, TextField, Typography, Paper, Link } from '@mui/material'
+import { Box, Button, Container, TextField, Typography, Paper, Link, Divider } from '@mui/material'
+import GoogleIcon from '@mui/icons-material/Google'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -30,6 +31,21 @@ export default function Login() {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signIn('google', {
+        redirect: false,
+        callbackUrl: '/dashboard'
+      })
+
+      if (!result?.error) {
+        router.push('/dashboard')
+      }
+    } catch (error) {
+      setError('Googleログインに失敗しました')
+    }
+  }
+
   return (
     <Container maxWidth="sm">
       <Box
@@ -46,6 +62,16 @@ export default function Login() {
             ログイン
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<GoogleIcon />}
+              onClick={handleGoogleSignIn}
+              sx={{ mt: 1, mb: 2 }}
+            >
+              Googleでログイン
+            </Button>
+            <Divider sx={{ my: 2 }}>または</Divider>
             <TextField
               margin="normal"
               required

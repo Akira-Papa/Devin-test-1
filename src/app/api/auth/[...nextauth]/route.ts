@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import clientPromise from '@/lib/mongodb'
 import bcrypt from 'bcryptjs'
@@ -8,6 +9,10 @@ import { MongoClient } from 'mongodb'
 const handler = NextAuth({
   adapter: MongoDBAdapter(clientPromise),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -55,15 +60,23 @@ const handler = NextAuth({
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ account, profile }) {
+      if (account?.provider === "google") {
+        return true
+      }
+      return true
+    },
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
+        token.provider = account?.provider
       }
       return token
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id
+        session.user.provider = token.provider as string
       }
       return session
     }
