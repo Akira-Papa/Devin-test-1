@@ -6,7 +6,11 @@ export class ContactRepository {
 
   private constructor() {
     // Initialize MongoDB connection with error handling
-    const MONGODB_URI = 'mongodb://127.0.0.1:27017/test1';
+    const MONGODB_URI = process.env.MONGODB_URI;
+    if (!MONGODB_URI) {
+      throw new Error('MONGODB_URI is not defined in environment variables');
+    }
+
     mongoose.connect(MONGODB_URI)
       .then(() => console.log('MongoDB connected successfully'))
       .catch(err => console.error('MongoDB connection error:', err));

@@ -1,9 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import {
+  Box,
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Paper,
+  Snackbar,
+  Alert,
+  AlertColor,
+} from '@mui/material';
 
 const contactSchema = z.object({
   name: z.string().min(1, '名前は必須です'),
@@ -13,48 +25,183 @@ const contactSchema = z.object({
 
 type ContactForm = z.infer<typeof contactSchema>;
 
+type SnackbarState = {
+  open: boolean;
+  message: string;
+  severity: AlertColor;
+};
+
 export default function ContactPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm<ContactForm>({
+  const [snackbar, setSnackbar] = useState<SnackbarState>({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
   });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   const onSubmit = async (data: ContactForm) => {
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('送信に失敗しました');
-      alert('送信が完了しました');
+
+      if (!response.ok) {
+        throw new Error('送信に失敗しました');
+      }
+
+      setSnackbar({
+        open: true,
+        message: 'お問い合わせを受け付けました',
+        severity: 'success',
+      });
+      reset();
     } catch (error) {
-      alert('エラーが発生しました');
+      setSnackbar({
+        open: true,
+        message: 'エラーが発生しました',
+        severity: 'error',
+      });
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">お問い合わせ</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div>
-          <label className="block mb-1">名前</label>
-          <input {...register('name')} className="w-full border p-2 rounded" />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-        </div>
-        <div>
-          <label className="block mb-1">メールアドレス</label>
-          <input {...register('email')} type="email" className="w-full border p-2 rounded" />
-          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-        </div>
-        <div>
-          <label className="block mb-1">メッセージ</label>
-          <textarea {...register('message')} className="w-full border p-2 rounded h-32" />
-          {errors.message && <p className="text-red-500">{errors.message.message}</p>}
-        </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          保存
-        </button>
-      </form>
-    </div>
+    <Container maxWidth="sm" sx={{ py: 8 }}>
+      <Paper
+        elevation={3}
+        sx={{
+          p: { xs: 3, sm: 6 },
+          borderRadius: 2,
+          backgroundColor: 'background.paper',
+          boxShadow: (theme) => theme.shadows[3]
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          align="center"
+          sx={{
+            mb: 4,
+            fontWeight: 700,
+            color: 'primary.main'
+          }}
+        >
+          お問い合わせ
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                label="名前"
+                required
+                fullWidth
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                {...register('name')}
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="メールアドレス"
+                required
+                fullWidth
+                type="email"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                {...register('email')}
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="メッセージ"
+                required
+                fullWidth
+                multiline
+                rows={4}
+                error={!!errors.message}
+                helperText={errors.message?.message}
+                {...register('message')}
+                variant="outlined"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '&:hover fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                sx={{
+                  py: 2,
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  '&:hover': {
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                送信する
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+          variant="filled"
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 }
