@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, TextField, Paper, Typography } from '@mui/material';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';

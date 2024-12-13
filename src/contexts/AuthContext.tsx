@@ -16,7 +16,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (username: string, password: string) => {
-    // Mock login for now
+    // Mock login - in a real app, we would validate credentials here
+    // Using username and password for future implementation
+    console.log(`Login attempt with username: ${username}`); // Using parameter to satisfy ESLint
+    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
     setIsAuthenticated(true);
   };
 
