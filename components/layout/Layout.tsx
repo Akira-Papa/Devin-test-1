@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, AppBar, Drawer, Toolbar, Typography, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Dashboard as DashboardIcon, Settings as SettingsIcon } from '@mui/icons-material';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const DRAWER_WIDTH = 240;
 
