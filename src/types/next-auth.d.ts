@@ -8,6 +8,9 @@ declare module "next-auth" {
       name?: string | null
       image?: string | null
       provider?: string
+      language?: string
+      emailNotifications?: boolean
+      theme?: string
     }
   }
 }

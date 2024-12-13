@@ -116,6 +116,31 @@ export default function Dashboard() {
                 </Button>
               </Paper>
             </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                }}
+              >
+                <Typography variant="h6" component="h3">
+                  アカウント
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push('/settings')}
+                  fullWidth
+                >
+                  ユーザー設定
+                </Button>
+              </Paper>
+            </Grid>
           </Grid>
         </Paper>
       </Box>
