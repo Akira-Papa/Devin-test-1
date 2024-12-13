@@ -35,71 +35,61 @@ export default function Register() {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          py: 4,
-        }}
-      >
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h1" component="h1" align="center" gutterBottom>
-            新規登録
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="お名前"
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="メールアドレス"
-              name="email"
-              autoComplete="email"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="パスワード"
-              type="password"
-              id="password"
-              autoComplete="new-password"
-            />
-            {error && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {error}
-              </Typography>
-            )}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              登録
-            </Button>
-            <Box sx={{ mt: 2 }}>
-              <Link href="/auth/login" variant="body2">
-                すでにアカウントをお持ちの方はこちら
-              </Link>
-            </Box>
+    <Container maxWidth="sm" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
+        <Typography variant="h2" component="h2" align="center" gutterBottom>
+          新規登録
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label="お名前"
+            name="name"
+            autoComplete="name"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="メールアドレス"
+            name="email"
+            autoComplete="email"
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="パスワード"
+            type="password"
+            id="password"
+            autoComplete="new-password"
+          />
+          {error && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            登録
+          </Button>
+          <Box sx={{ mt: 2 }}>
+            <Link href="/auth/login" variant="body2">
+              すでにアカウントをお持ちの方はこちら
+            </Link>
           </Box>
-        </Paper>
-      </Box>
+        </Box>
+      </Paper>
     </Container>
   )
 }
