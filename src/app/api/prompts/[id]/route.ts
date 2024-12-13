@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/config/auth.config';
 import { PromptRepository } from '../../../../repositories/PromptRepository';
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -14,13 +14,13 @@ export async function PUT(
 
   const { content } = await request.json();
   const repository = PromptRepository.getInstance();
-  const prompt = await repository.updatePrompt(params.id, content);
+  const prompt = await repository.updatePrompt((await params).id, content);
   return NextResponse.json(prompt);
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
@@ -28,6 +28,6 @@ export async function DELETE(
   }
 
   const repository = PromptRepository.getInstance();
-  const success = await repository.deletePrompt(params.id);
+  const success = await repository.deletePrompt((await params).id);
   return NextResponse.json({ success });
 }

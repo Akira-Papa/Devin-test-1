@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/config/auth.config';
 import { PromptRepository } from '../../../repositories/PromptRepository';
 
 export async function GET() {
