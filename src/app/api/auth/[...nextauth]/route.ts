@@ -6,7 +6,7 @@ import clientPromise from '@/lib/mongodb'
 import bcrypt from 'bcryptjs'
 import { MongoClient } from 'mongodb'
 
-const handler = NextAuth({
+export const authOptions = {
     adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
@@ -87,6 +87,8 @@ const handler = NextAuth({
             return session
         },
     },
-})
+}
+
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
