@@ -48,74 +48,64 @@ export default function Login() {
 
   return (
     <Container maxWidth="sm">
-      <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          py: 4,
-        }}
-      >
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h1" component="h1" align="center" gutterBottom>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Typography variant="h2" component="h2" align="center" gutterBottom>
+          ログイン
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+            onClick={handleGoogleSignIn}
+            sx={{ mt: 1, mb: 2 }}
+          >
+            Googleでログイン
+          </Button>
+          <Divider sx={{ my: 2 }}>または</Divider>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="メールアドレス"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="パスワード"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          {error && (
+            <Typography color="error" sx={{ mt: 2 }}>
+              {error}
+            </Typography>
+          )}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             ログイン
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              startIcon={<GoogleIcon />}
-              onClick={handleGoogleSignIn}
-              sx={{ mt: 1, mb: 2 }}
-            >
-              Googleでログイン
-            </Button>
-            <Divider sx={{ my: 2 }}>または</Divider>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="メールアドレス"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="パスワード"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            {error && (
-              <Typography color="error" sx={{ mt: 2 }}>
-                {error}
-              </Typography>
-            )}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              ログイン
-            </Button>
-            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-              <Link href="/auth/forgot-password" variant="body2">
-                パスワードを忘れた方
-              </Link>
-              <Link href="/auth/register" variant="body2">
-                新規登録はこちら
-              </Link>
-            </Box>
+          </Button>
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+            <Link href="/auth/forgot-password" variant="body2">
+              パスワードを忘れた方
+            </Link>
+            <Link href="/auth/register" variant="body2">
+              新規登録はこちら
+            </Link>
           </Box>
-        </Paper>
-      </Box>
+        </Box>
+      </Paper>
     </Container>
   )
 }
