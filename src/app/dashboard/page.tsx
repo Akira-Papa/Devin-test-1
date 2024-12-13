@@ -38,6 +38,31 @@ export default function Dashboard() {
                 }}
               >
                 <Typography variant="h6" component="h2">
+                  プロンプト管理
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push('/prompts')}
+                  fullWidth
+                >
+                  プロンプト一覧
+                </Button>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 3,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                }}
+              >
+                <Typography variant="h6" component="h2">
                   ドキュメント
                 </Typography>
                 <Button
