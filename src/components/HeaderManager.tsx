@@ -17,7 +17,15 @@ export default function HeaderManager({ children }: HeaderManagerProps) {
   return (
     <>
       {isAuthPage ? <AuthHeader /> : <MainHeader />}
-      <Box component="main" sx={{ pt: isAuthPage ? 0 : ['48px', '56px', '64px'] }}>
+      <Box component="main" sx={{
+        pt: ['48px', '56px', '64px'],
+        ...(isAuthPage && {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh'
+        })
+      }}>
         {children}
       </Box>
     </>
