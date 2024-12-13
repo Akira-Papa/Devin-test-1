@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Typography, Box, Grid, Card, CardContent } from '@mui/material';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 

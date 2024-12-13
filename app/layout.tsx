@@ -1,4 +1,4 @@
-import { ClientProviders } from '@/components/providers/ClientProviders';
+import { ClientProviders } from '../components/providers/ClientProviders';
 
 export const metadata = {
   title: 'Business Dashboard',
