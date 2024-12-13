@@ -21,7 +21,7 @@ export async function GET() {
           const unsubscribe = repository.subscribe((event: string, data: any) => {
             if (!isConnectionClosed) {
               try {
-                const message = `data: ${JSON.stringify(data)}\n\n`;
+                const message = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
                 controller.enqueue(encoder.encode(message));
               } catch (error) {
                 console.error('Error sending SSE message:', error);

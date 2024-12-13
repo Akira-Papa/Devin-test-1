@@ -8,9 +8,15 @@ import { type JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { MongoClient } from 'mongodb'
+import clientPromise from '@/lib/mongodb'
 
 export const authOptions: NextAuthOptions = {
+    debug: true,
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: 'jwt',
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -29,8 +35,8 @@ export const authOptions: NextAuthOptions = {
                 }
 
                 try {
-                    console.log('Connecting to MongoDB with URI:', process.env.MONGODB_URI?.substring(0, 20) + '...')
-                    const client = await MongoClient.connect(process.env.MONGODB_URI!)
+                    console.log('Connecting to MongoDB...')
+                    const client = await clientPromise
                     console.log('MongoDB connected successfully')
 
                     const usersCollection = client.db().collection('users')
@@ -42,7 +48,6 @@ export const authOptions: NextAuthOptions = {
 
                     if (!user) {
                         console.log('User not found:', credentials.email)
-                        await client.close()
                         throw new Error('メールアドレスまたはパスワードが正しくありません')
                     }
 
@@ -54,12 +59,10 @@ export const authOptions: NextAuthOptions = {
 
                     if (!isPasswordValid) {
                         console.log('Password invalid for user:', credentials.email)
-                        await client.close()
                         throw new Error('メールアドレスまたはパスワードが正しくありません')
                     }
 
                     console.log('Login successful for user:', credentials.email)
-                    await client.close()
                     return {
                         id: user._id.toString(),
                         email: user.email,
@@ -74,10 +77,6 @@ export const authOptions: NextAuthOptions = {
     ],
     pages: {
         signIn: '/auth/login',
-    },
-    session: {
-        strategy: 'jwt',
-        maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
         async signIn({ account, profile }: {
@@ -111,5 +110,4 @@ export const authOptions: NextAuthOptions = {
             return session
         },
     },
-    debug: true,
 }

@@ -58,18 +58,23 @@ export default function PromptsPage() {
   useEffect(() => {
     const eventSource = new EventSource('/api/prompts/sse');
 
-    eventSource.onmessage = (event) => {
+    // Handle specific event types
+    eventSource.addEventListener('create', (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === 'create') {
-        setPrompts(prev => [data.prompt, ...prev]);
-      } else if (data.type === 'update') {
-        setPrompts(prev => prev.map(p =>
-          p._id === data.prompt._id ? data.prompt : p
-        ));
-      } else if (data.type === 'delete') {
-        setPrompts(prev => prev.filter(p => p._id !== data.promptId));
-      }
-    };
+      setPrompts(prev => [data.prompt, ...prev]);
+    });
+
+    eventSource.addEventListener('update', (event) => {
+      const data = JSON.parse(event.data);
+      setPrompts(prev => prev.map(p =>
+        p._id === data.prompt._id ? data.prompt : p
+      ));
+    });
+
+    eventSource.addEventListener('delete', (event) => {
+      const data = JSON.parse(event.data);
+      setPrompts(prev => prev.filter(p => p._id !== data.promptId));
+    });
 
     eventSource.onerror = () => {
       setError('リアルタイム更新の接続に失敗しました');
