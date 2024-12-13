@@ -1,13 +1,17 @@
 import { withAuth } from 'next-auth/middleware'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
+import { JWT } from 'next-auth/jwt'
 
 export default withAuth(
-  function middleware(req) {
+  function middleware(req: NextRequest) {
     return NextResponse.next()
   },
   {
     callbacks: {
-      authorized: ({ req, token }) => {
+      authorized: ({ req, token }: {
+        req: NextRequest
+        token: JWT | null
+      }) => {
         // Allow access to top page and auth-related pages
         if (
           req.nextUrl.pathname === '/' ||

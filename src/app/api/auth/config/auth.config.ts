@@ -1,4 +1,10 @@
-import { AuthOptions } from 'next-auth'
+import NextAuth, {
+    type NextAuthOptions,
+    type Account,
+    type Session,
+    type User
+} from 'next-auth'
+import { type JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
@@ -6,7 +12,7 @@ import clientPromise from '@/lib/mongodb'
 import bcrypt from 'bcryptjs'
 import { MongoClient } from 'mongodb'
 
-export const authOptions: AuthOptions = {
+export const authOptions: NextAuthOptions = {
     adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
@@ -66,20 +72,30 @@ export const authOptions: AuthOptions = {
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
-        async signIn({ account, profile }) {
+        async signIn({ account, profile }: {
+            account: Account | null
+            profile?: any
+        }) {
             if (account?.provider === 'google') {
                 return true
             }
             return true
         },
-        async jwt({ token, user, account }) {
+        async jwt({ token, user, account }: {
+            token: JWT
+            user: User | null
+            account: Account | null
+        }) {
             if (user) {
                 token.id = user.id
                 token.provider = account?.provider
             }
             return token
         },
-        async session({ session, token }) {
+        async session({ session, token }: {
+            session: Session
+            token: JWT
+        }) {
             if (session.user) {
                 session.user.id = token.id
                 session.user.provider = token.provider as string
