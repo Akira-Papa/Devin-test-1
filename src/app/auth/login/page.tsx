@@ -47,8 +47,8 @@ export default function Login() {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3} sx={{ p: 4 }}>
+    <Container maxWidth="sm" sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+      <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
         <Typography variant="h2" component="h2" align="center" gutterBottom>
           ログイン
         </Typography>
