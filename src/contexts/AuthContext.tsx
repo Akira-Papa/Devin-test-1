@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (username: string, password: string) => {
     // Mock login - in a real app, we would validate credentials here
     // Using username and password for future implementation
-    console.log(`Login attempt with username: ${username}`); // Using parameter to satisfy ESLint
+    console.log(`Login attempt with username: ${username}, password length: ${password.length}`); // Using parameters to satisfy ESLint
     await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
     setIsAuthenticated(true);
   };
