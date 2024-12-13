@@ -1,9 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import ThemeRegistry from '@/components/ThemeRegistry'
-import MainHeader from '@/components/MainHeader'
-import Box from '@mui/material/Box'
-import { usePathname } from 'next/navigation'
+import HeaderManager from '@/components/HeaderManager'
 import './globals.css'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -20,17 +18,13 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-    const pathname = usePathname()
-    const isAuthPage = pathname?.startsWith('/auth')
-
     return (
         <html lang="ja">
             <body>
                 <ThemeRegistry>
-                    {!isAuthPage && <MainHeader />}
-                    <Box component="main" sx={{ pt: isAuthPage ? 0 : ['48px', '56px', '64px'] }}>
+                    <HeaderManager>
                         {children}
-                    </Box>
+                    </HeaderManager>
                 </ThemeRegistry>
             </body>
         </html>
