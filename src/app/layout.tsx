@@ -1,5 +1,7 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import ThemeRegistry from '@/components/ThemeRegistry'
+import HeaderManager from '@/components/HeaderManager'
 import './globals.css'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -19,7 +21,11 @@ export default function RootLayout({
     return (
         <html lang="ja">
             <body>
-                <ThemeRegistry>{children}</ThemeRegistry>
+                <ThemeRegistry>
+                    <HeaderManager>
+                        {children}
+                    </HeaderManager>
+                </ThemeRegistry>
             </body>
         </html>
     )

@@ -129,8 +129,8 @@ export default function PromptsPage() {
 
   return (
     <Container maxWidth="md">
-      <Box sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+      <Box sx={{ mt: { xs: 8, sm: 9 }, py: 4 }}>
+        <Typography variant="h2" component="h2" gutterBottom>
           プロンプト一覧
         </Typography>
 

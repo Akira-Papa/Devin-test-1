@@ -81,7 +81,7 @@ export default function ContactPage() {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: 8 }}>
+    <Container maxWidth="sm" sx={{ mt: { xs: 8, sm: 9 }, py: 4 }}>
       <Paper
         elevation={3}
         sx={{
@@ -92,8 +92,8 @@ export default function ContactPage() {
         }}
       >
         <Typography
-          variant="h4"
-          component="h1"
+          variant="h2"
+          component="h2"
           gutterBottom
           align="center"
           sx={{
