@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/config/auth.config';
+import { PromptRepository } from '@/repositories/PromptRepository';
 
 export async function GET() {
   try {
@@ -9,19 +10,47 @@ export async function GET() {
       return NextResponse.json({ error: '認証が必要です' }, { status: 401 });
     }
 
+    const repository = PromptRepository.getInstance();
+    const encoder = new TextEncoder();
+    let isConnectionClosed = false;
+
     const response = new Response(
       new ReadableStream({
         start(controller) {
-          const encoder = new TextEncoder();
+          // Subscribe to prompt updates
+          const unsubscribe = repository.subscribe((event: string, data: any) => {
+            if (!isConnectionClosed) {
+              try {
+                const message = `data: ${JSON.stringify(data)}\n\n`;
+                controller.enqueue(encoder.encode(message));
+              } catch (error) {
+                console.error('Error sending SSE message:', error);
+              }
+            }
+          });
 
           // Keep connection alive with heartbeat
           const interval = setInterval(() => {
-            controller.enqueue(encoder.encode(':\n\n'));
+            if (!isConnectionClosed) {
+              try {
+                controller.enqueue(encoder.encode(':\n\n'));
+              } catch (error) {
+                console.error('Error sending heartbeat:', error);
+                clearInterval(interval);
+              }
+            }
           }, 30000);
 
           // Cleanup on connection close
           return () => {
+            isConnectionClosed = true;
             clearInterval(interval);
+            unsubscribe();
+            try {
+              controller.close();
+            } catch (error) {
+              console.error('Error closing controller:', error);
+            }
           };
         },
       }),
