@@ -7,13 +7,10 @@ import NextAuth, {
 import { type JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
-import { MongoDBAdapter } from '@auth/mongodb-adapter'
-import clientPromise from '@/lib/mongodb'
 import bcrypt from 'bcryptjs'
 import { MongoClient } from 'mongodb'
 
 export const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -27,39 +24,50 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    throw new Error(
-                        'メールアドレスとパスワードを入力してください'
-                    )
+                    console.log('Missing credentials')
+                    throw new Error('メールアドレスとパスワードを入力してください')
                 }
 
                 try {
-                    const client = await clientPromise
+                    console.log('Connecting to MongoDB with URI:', process.env.MONGODB_URI?.substring(0, 20) + '...')
+                    const client = await MongoClient.connect(process.env.MONGODB_URI!)
+                    console.log('MongoDB connected successfully')
+
                     const usersCollection = client.db().collection('users')
+                    console.log('Attempting login for email:', credentials.email)
 
                     const user = await usersCollection.findOne({
                         email: credentials.email,
                     })
 
                     if (!user) {
-                        throw new Error('ユーザーが見つかりません')
+                        console.log('User not found:', credentials.email)
+                        await client.close()
+                        throw new Error('メールアドレスまたはパスワードが正しくありません')
                     }
 
+                    console.log('User found, comparing passwords')
                     const isPasswordValid = await bcrypt.compare(
                         credentials.password,
                         user.password
                     )
 
                     if (!isPasswordValid) {
-                        throw new Error('パスワードが正しくありません')
+                        console.log('Password invalid for user:', credentials.email)
+                        await client.close()
+                        throw new Error('メールアドレスまたはパスワードが正しくありません')
                     }
 
+                    console.log('Login successful for user:', credentials.email)
+                    await client.close()
                     return {
                         id: user._id.toString(),
                         email: user.email,
                         name: user.name,
                     }
                 } catch (error) {
-                    throw new Error('認証に失敗しました')
+                    console.error('Login error:', error)
+                    throw error
                 }
             },
         }),
@@ -103,4 +111,5 @@ export const authOptions: NextAuthOptions = {
             return session
         },
     },
+    debug: true,
 }
