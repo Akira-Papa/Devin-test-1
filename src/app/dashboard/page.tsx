@@ -14,10 +14,10 @@ export default function Dashboard() {
 
   return (
     <Container maxWidth="md">
-      <Box sx={{ py: 4 }}>
+      <Box sx={{ mt: { xs: 8, sm: 9 }, py: 4 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-            <Typography variant="h1" component="h1">
+            <Typography variant="h2" component="h2">
               ダッシュボード
             </Typography>
             <Button variant="outlined" color="primary" onClick={handleSignOut}>
@@ -37,7 +37,7 @@ export default function Dashboard() {
                   gap: 2,
                 }}
               >
-                <Typography variant="h6" component="h2">
+                <Typography variant="h6" component="h3">
                   プロンプト管理
                 </Typography>
                 <Button
@@ -62,7 +62,7 @@ export default function Dashboard() {
                   gap: 2,
                 }}
               >
-                <Typography variant="h6" component="h2">
+                <Typography variant="h6" component="h3">
                   ドキュメント
                 </Typography>
                 <Button
@@ -103,7 +103,7 @@ export default function Dashboard() {
                   gap: 2,
                 }}
               >
-                <Typography variant="h6" component="h2">
+                <Typography variant="h6" component="h3">
                   その他
                 </Typography>
                 <Button
