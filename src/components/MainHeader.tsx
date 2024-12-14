@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default function MainHeader() {
   return (
-    <AppBar position="fixed" sx={{ zIndex: 2000, backgroundColor: 'white', color: 'text.primary', boxShadow: 1 }}>
+    <AppBar position="fixed" sx={{ zIndex: 2000, backgroundColor: '#1B2B65', color: 'white', boxShadow: 1 }}>
       <Toolbar>
         <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
           認証システム
