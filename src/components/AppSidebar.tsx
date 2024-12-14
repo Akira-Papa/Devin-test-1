@@ -8,13 +8,24 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChatIcon from '@mui/icons-material/Chat';
 import Link from 'next/link';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme } from '@mui/material/styles';
 
 const drawerWidth = 240;
 
-export default function AppSidebar() {
+interface AppSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function AppSidebar({ isOpen = true, onClose }: AppSidebarProps) {
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+
   return (
     <Drawer
-      variant="permanent"
+      variant={isMobile ? 'temporary' : 'permanent'}
+      open={isMobile ? isOpen : true}
+      onClose={onClose}
       sx={{
         width: drawerWidth,
         flexShrink: 0,
