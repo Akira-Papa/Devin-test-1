@@ -14,17 +14,18 @@ interface HeaderManagerProps {
 export default function HeaderManager({ children }: HeaderManagerProps) {
   const pathname = usePathname();
   const isAuthPage = pathname?.startsWith('/auth');
+  const isTopPage = pathname === '/';
 
   return (
     <Box sx={{ display: 'flex' }}>
-      {isAuthPage ? <AuthHeader /> : <MainHeader />}
-      {!isAuthPage && <AppSidebar />}
+      {!isTopPage && (isAuthPage ? <AuthHeader /> : <MainHeader />)}
+      {!isTopPage && !isAuthPage && <AppSidebar />}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          pt: ['48px', '56px', '64px'],
-          pl: !isAuthPage ? '240px' : 0,
+          pt: !isTopPage ? ['48px', '56px', '64px'] : 0,
+          pl: !isTopPage && !isAuthPage ? '240px' : 0,
           ...(isAuthPage && {
             display: 'flex',
             justifyContent: 'center',
