@@ -13,10 +13,12 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#1B2B65', // Navy color for business theme
+      light: '#2A407A',
+      dark: '#111B40',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#2E7D32', // Professional green
     },
     background: {
       default: '#f5f5f5',
