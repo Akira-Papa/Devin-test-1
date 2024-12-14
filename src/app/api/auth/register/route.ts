@@ -45,7 +45,13 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Registration error:', error)
+    const errorObj = error as Error
+    console.error('Registration error:', {
+      name: errorObj.name || 'Unknown',
+      message: errorObj.message || 'No message',
+      stack: errorObj.stack || 'No stack trace',
+      raw: error
+    })
     return NextResponse.json(
       { error: 'ユーザー登録に失敗しました' },
       { status: 500 }
