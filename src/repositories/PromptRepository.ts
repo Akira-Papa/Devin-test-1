@@ -15,7 +15,7 @@ export class PromptRepository {
     private async ensureConnection() {
         if (!this.isConnected) {
             if (mongoose.connection.readyState !== 1) {
-                await mongoose.connect(process.env.DATABASE_URL!)
+                await mongoose.connect(process.env.MONGODB_URI!)
             }
             this.isConnected = true
         }
