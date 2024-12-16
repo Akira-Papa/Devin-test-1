@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import clientPromise, { initializeDatabase } from '@/lib/mongodb'
+import { sendVerificationRequest } from '@/lib/auth/NextAuthService'
 
 export async function POST(request: Request) {
   try {
@@ -32,16 +33,32 @@ export async function POST(request: Request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
+    // Create verification token
+    const verificationToken = crypto.randomUUID()
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24時間後
+
     // Create user
     await usersCollection.insertOne({
       name,
       email,
       password: hashedPassword,
+      emailVerified: null,
+      verificationToken,
+      verificationExpires,
       createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+
+    // Send verification email
+    await sendVerificationRequest({
+      identifier: email,
+      token: verificationToken,
+      expires: verificationExpires,
+      url: `${process.env.NEXTAUTH_URL}/auth/verify?token=${verificationToken}`,
     })
 
     return NextResponse.json(
-      { message: 'ユーザー登録が完了しました' },
+      { message: 'ユーザー登録が完了しました。メールを確認してください。' },
       { status: 201 }
     )
   } catch (error) {
