@@ -36,6 +36,7 @@
     "mongoose": "^8.8.4",
     "next": "^15.1.0",
     "next-auth": "^4.24.11",
+    "nodemailer": "^6.9.16",
     "postcss": "^8.4.49",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
