@@ -8,7 +8,7 @@ export interface Quiz {
 export async function generateQuiz(): Promise<Quiz> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    throw new Error('OpenAI API key is not configured');
+    throw new Error("OpenAI API key is not configured");
   }
 
   const prompt = `
@@ -28,17 +28,17 @@ export async function generateQuiz(): Promise<Quiz> {
 `;
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: "gpt-3.5-turbo",
         messages: [
           {
-            role: 'user',
+            role: "user",
             content: prompt,
           },
         ],
@@ -47,20 +47,20 @@ export async function generateQuiz(): Promise<Quiz> {
     });
 
     if (!response.ok) {
-      throw new Error('OpenAI API request failed');
+      throw new Error("OpenAI API request failed");
     }
 
     const data = await response.json();
     const content = data.choices[0]?.message?.content;
 
     if (!content) {
-      throw new Error('Invalid response from OpenAI API');
+      throw new Error("Invalid response from OpenAI API");
     }
 
     const quiz: Quiz = JSON.parse(content);
     return quiz;
   } catch (error) {
-    console.error('Error generating quiz:', error);
+    console.error("Error generating quiz:", error);
     throw error;
   }
 }

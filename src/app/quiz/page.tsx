@@ -1,9 +1,18 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useState } from 'react';
-import { Button, Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, Alert } from '@mui/material';
-import type { Quiz } from '@/services/openai';
+import React from "react";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Alert,
+} from "@mui/material";
+import type { Quiz } from "@/services/openai";
 
 interface RadioChangeEvent {
   target: {
@@ -22,17 +31,19 @@ export default function QuizPage() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/quiz');
+      const response = await fetch("/api/quiz");
       if (!response.ok) {
-        throw new Error('クイズの生成に失敗しました');
+        throw new Error("クイズの生成に失敗しました");
       }
       const data = await response.json();
       setQuiz(data);
       setSelectedAnswer(null);
       setShowResult(false);
     } catch (error) {
-      console.error('Error fetching quiz:', error);
-      setError('クイズの生成中にエラーが発生しました。もう一度お試しください。');
+      console.error("Error fetching quiz:", error);
+      setError(
+        "クイズの生成中にエラーが発生しました。もう一度お試しください。",
+      );
     } finally {
       setLoading(false);
     }
@@ -49,9 +60,9 @@ export default function QuizPage() {
         onClick={generateNewQuiz}
         disabled={loading}
         className="mb-4"
-        aria-label={loading ? 'クイズを生成中' : '新しいクイズを生成'}
+        aria-label={loading ? "クイズを生成中" : "新しいクイズを生成"}
       >
-        {loading ? '生成中...' : '新しいクイズを生成'}
+        {loading ? "生成中..." : "新しいクイズを生成"}
       </Button>
 
       {error && (
@@ -69,7 +80,9 @@ export default function QuizPage() {
 
             <RadioGroup
               value={selectedAnswer}
-              onChange={(e: RadioChangeEvent) => setSelectedAnswer(Number(e.target.value))}
+              onChange={(e: RadioChangeEvent) =>
+                setSelectedAnswer(Number(e.target.value))
+              }
               aria-label="クイズの選択肢"
             >
               {quiz.choices.map((choice: string, index: number) => (
@@ -98,8 +111,14 @@ export default function QuizPage() {
 
             {showResult && (
               <div className="mt-4" role="alert">
-                <Alert severity={selectedAnswer === quiz.correctAnswer ? "success" : "error"}>
-                  {selectedAnswer === quiz.correctAnswer ? "正解！" : "不正解..."}
+                <Alert
+                  severity={
+                    selectedAnswer === quiz.correctAnswer ? "success" : "error"
+                  }
+                >
+                  {selectedAnswer === quiz.correctAnswer
+                    ? "正解！"
+                    : "不正解..."}
                 </Alert>
                 <Typography variant="body1" className="mt-2">
                   解説: {quiz.explanation}
