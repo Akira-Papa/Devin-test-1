@@ -54,9 +54,10 @@ export async function GET(req: Request) {
         
         return {
           ...post,
+          likes: post.likes || [],
           author,
           commentCount,
-          isLiked: session?.user ? post.likes.includes(session.user.id) : false
+          isLiked: session?.user ? post.likes?.includes(session.user.id) || false : false
         };
       })
     );
