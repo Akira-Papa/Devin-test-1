@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SNS Portal
 
-## Getting Started
+Xのような機能を持つSNSプラットフォーム。投稿、フォロー、フィード表示機能に加え、投稿後に天才キャラクターからのAIコメントが自動生成される特徴を持っています。
 
-First, run the development server:
+## 機能
 
+- **ユーザー認証**
+  - メールアドレスによる新規登録
+  - メールアドレスとパスワードによるログイン
+  - Googleアカウントによるログイン
+
+- **投稿機能**
+  - テキスト投稿
+  - 画像URL追加
+  - 投稿後の天才キャラによるAIコメント自動生成
+
+- **インタラクション機能**
+  - 投稿へのいいね
+  - 投稿へのコメント
+  - ユーザーフォロー
+
+- **フィード表示**
+  - すべての投稿表示
+  - フォローしているユーザーの投稿のみ表示
+
+- **プロフィール機能**
+  - ユーザープロフィール表示
+  - 投稿一覧表示
+  - フォロー/フォロワー数表示
+
+## 天才キャラクター
+
+投稿内容に関連する分野の専門家キャラクターが自動的にコメントを生成します：
+
+1. **佐藤 哲也** - 科学技術の専門家
+2. **田中 歴史** - 歴史文化の専門家
+3. **鈴木 経済** - 経済金融の専門家
+4. **山本 アート** - 芸術デザインの専門家
+
+## 技術スタック
+
+- **フロントエンド**: Next.js (App Router), TypeScript, Tailwind CSS
+- **バックエンド**: Next.js API Routes
+- **データベース**: MongoDB
+- **認証**: NextAuth.js
+- **AI**: Anthropic API (Claude 3 Sonnet)
+
+## セットアップ
+
+1. リポジトリをクローン
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd sns-portal
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 依存関係をインストール
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. 環境変数を設定
+`.env.local`ファイルを作成し、以下の変数を設定：
+```
+MONGODB_URI=
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+ANTHROPIC_API_KEY=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. 開発サーバーを起動
+```bash
+npm run dev
+```
 
-## Learn More
+5. ブラウザで開く
+```
+http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 使用方法
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. アカウントを作成またはログイン
+2. ホームページで投稿を閲覧
+3. 「投稿する」ボタンから新しい投稿を作成
+4. 投稿後、AIキャラクターからのコメントが自動生成されます
+5. 他のユーザーをフォローして、フィードをカスタマイズ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 今後の改善点
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 画像アップロード機能の追加
+- リアルタイム通知機能
+- モバイルレスポンシブデザインの最適化
+- ユーザープロフィール編集機能
+- 検索機能の実装
